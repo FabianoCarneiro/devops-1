@@ -29,4 +29,7 @@ jobs:
       - name: Deploy to GitHub Pages
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: npx gh-pages -d build -u "https://${ACCESS_TOKEN}@github.com"
+        run: |
+          git config --global user.email "gui.henmelo@gmail.com"
+          git config --global user.name "ghenmelo"
+          npx gh-pages -d build -u "https://${ACCESS_TOKEN}@github.com"
