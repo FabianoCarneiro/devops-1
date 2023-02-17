@@ -24,10 +24,10 @@ jobs:
         env:
           CI: true
 
-      - name: Deploy to GitHub Pages
-        env:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-        run: |
-          git config --global user.name "ghenmelo"
-          git config --global user.email "gui.henmelo@gmail.com"
-          npx gh-pages -d build -u "https://${ACCESS_TOKEN}@github.com"
+      - name: Deploy to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.ACCESS_TOKEN }}
+          publish_dir: ./build
+          user_name: ghenmelo
+          user_email: gui.henmelo@gmail.com
