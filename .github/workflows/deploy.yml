@@ -3,33 +3,31 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # mude aqui para a branch que deseja monitorar
+      - main # substitua "main" pelo nome da branch principal do seu repositório
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
 
       - name: Install dependencies
-        run: |
-          npm install
-          npm install --save-dev gh-pages@^4.0.0
-          
-      - name: Install dependencies
-        run: |
-          git config --global user.email "gui.henmelo@gmail.com"
-          git config --global user.name "Guilherme Melo"
+        run: yarn install
 
-      - name: Build project
-        run: npm run build
+      - name: Build
+        run: yarn build
+        env:
+          CI: true
 
       - name: Deploy to GitHub Pages
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
-          git config --global user.email "gui.henmelo@gmail.com"
           git config --global user.name "ghenmelo"
+          git config --global user.email "gui.henmelo@gmail.com"
           npx gh-pages -d build -u "https://${ACCESS_TOKEN}@github.com"
