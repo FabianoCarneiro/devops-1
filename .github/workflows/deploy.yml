@@ -3,31 +3,34 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main # substitua "main" pelo nome da branch principal do seu repositório
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: '14.x'
 
-      - name: Install dependencies
-        run: yarn install
-
+      - name: Install Dependencies
+        run: npm install
+        
+      - name: Set up Git user
+        run: |
+         git config --global user.email "viniroxo@gmail.com"
+         git config --global user.name "Vinicius Roxo"
       - name: Build
-        run: yarn build
-        env:
-          CI: true
+        run: npm run build
 
       - name: Deploy to Github Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.ACCESS_TOKEN }}
           publish_dir: ./build
-          user_name: ghenmelo
-          user_email: gui.henmelo@gmail.com
+          user_name: viniroxo
+          user_email: viniroxo@gmail.com
